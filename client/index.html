@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Model Router | AI Middleware Gateway</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Navigation Bar -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <div class="logo-icon">⚡</div>
+        <div class="brand-text">
+          <h1>Multi-Model Router</h1>
+          <span class="tagline">Intelligent AI Middleware &amp; LLM Gateway</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <div id="statusBadge" class="status-pill status-checking">
+          <span class="status-dot"></span>
+          <span id="statusText">Checking Gateway...</span>
+        </div>
+        <a href="/docs" target="_blank" class="nav-link">Swagger Docs</a>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="main-container">
+      <!-- Left Column: Input Console -->
+      <section class="card console-card">
+        <div class="card-header">
+          <h2>Prompt Console</h2>
+          <span class="badge">Step 1: Input</span>
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="apiKey">API Key (Auth Service)</label>
+            <button type="button" id="btnQuickKey" class="btn-text">Use Demo Key</button>
+          </div>
+          <div class="input-with-action">
+            <input 
+              type="text" 
+              id="apiKey" 
+              placeholder="e.g. gdg-test-key-2026 or gdg_live_..." 
+              value="gdg-test-key-2026"
+            />
+            <button type="button" id="btnNewKey" class="btn-secondary" title="Generate New Key">New Key</button>
+          </div>
+          <p class="field-hint">Validated via persistent SQLite Auth Service</p>
+        </div>
+
+        <div class="form-group">
+          <label>Quick Presets</label>
+          <div class="presets-container">
+            <button type="button" class="preset-chip" data-prompt="where is Taj mahal located ?">
+              🏛️ Taj Mahal (Simple QA)
+            </button>
+            <button type="button" class="preset-chip" data-prompt="Write a Python script that implements binary search on a sorted list.">
+              🐍 Binary Search (Code)
+            </button>
+            <button type="button" class="preset-chip" data-prompt="Prove that every planar graph is 4-colorable and provide formal topological lemmas with step-by-step mathematical deduction.">
+              📐 4-Color Theorem (Math Proof)
+            </button>
+            <button type="button" class="preset-chip" data-prompt="Write a suspenseful opening paragraph for a psychological mystery novel set in an abandoned observatory.">
+              ✍️ Mystery Story (Creative)
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="promptInput">User Prompt</label>
+          <textarea 
+            id="promptInput" 
+            rows="5" 
+            placeholder="Enter your prompt here..."
+          >where is Taj mahal located ?</textarea>
+        </div>
+
+        <button id="btnRoute" class="btn-primary">
+          <span class="btn-text">Analyze &amp; Route Prompt</span>
+          <span class="spinner hidden" id="spinner"></span>
+        </button>
+
+        <div id="errorBox" class="alert-box alert-error hidden"></div>
+      </section>
+
+      <!-- Right Column: Routing Dashboard -->
+      <section class="card dashboard-card">
+        <div class="card-header">
+          <h2>Routing Decision &amp; Analysis</h2>
+          <span class="badge" id="categoryBadge">Awaiting Prompt</span>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+          <div class="empty-icon">🧠</div>
+          <h3>NLP Classifier &amp; Router Ready</h3>
+          <p>Submit a prompt or pick a preset on the left to observe complexity classification and LLM forwarding.</p>
+        </div>
+
+        <div id="resultsView" class="results-view hidden">
+          <!-- Model Card -->
+          <div class="model-hero-card">
+            <div class="model-hero-header">
+              <div>
+                <span class="meta-label">Selected Model</span>
+                <h3 id="selectedModelId">google/gemini-1.5-flash</h3>
+              </div>
+              <span id="tierBadge" class="tier-badge">Tier 1: Cheap &amp; Fast</span>
+            </div>
+            
+            <div class="model-meta-grid">
+              <div class="meta-item">
+                <span class="meta-label">Provider</span>
+                <span class="meta-value" id="modelProvider">Google DeepMind</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Est. Cost (Input)</span>
+                <span class="meta-value" id="costInput">$0.075 / 1M</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Est. Cost (Output)</span>
+                <span class="meta-value" id="costOutput">$0.30 / 1M</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rationale Callout -->
+          <div class="rationale-box">
+            <div class="rationale-title">
+              <span>💡 Routing Rationale</span>
+            </div>
+            <p id="routingReasonText">Prompt complexity is low. Routed to cheap &amp; fast model.</p>
+          </div>
+
+          <!-- Metrics Panel -->
+          <div class="metrics-panel">
+            <h4>Classifier Diagnostics</h4>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-header">
+                  <span>Complexity Score</span>
+                  <strong id="metricComplexity">0.07</strong>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" id="fillComplexity" style="width: 15%"></div>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-header">
+                  <span>Task Category</span>
+                  <strong id="metricTaskType">Open QA</strong>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill progress-blue" style="width: 100%"></div>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-header">
+                  <span>Reasoning Score</span>
+                  <strong id="metricReasoning">0.01</strong>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill progress-purple" id="fillReasoning" style="width: 5%"></div>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-header">
+                  <span>Creativity Scope</span>
+                  <strong id="metricCreativity">0.00</strong>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill progress-orange" id="fillCreativity" style="width: 5%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulated Response Box -->
+          <div class="response-box">
+            <div class="response-box-header">
+              <span>💬 Simulated LLM Response</span>
+              <span class="pill-sm">Live Dispatch Simulation</span>
+            </div>
+            <pre class="response-text" id="simulatedReply"></pre>
+          </div>
+
+          <!-- Forwarded Query Payload (Collapsible) -->
+          <details class="payload-details">
+            <summary>View Forwarded Provider Query Payload (JSON)</summary>
+            <pre class="json-code" id="forwardedPayloadCode"></pre>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <!-- Key Generator Modal -->
+    <div id="keyModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Generate New API Key</h3>
+          <button type="button" id="btnCloseModal" class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="newClientName">Client / Application Name</label>
+            <input type="text" id="newClientName" placeholder="e.g. Taj Mahal App Client" value="Demo Web App" />
+          </div>
+          <div class="form-group">
+            <label for="newTier">Tier</label>
+            <select id="newTier">
+              <option value="standard">Standard</option>
+              <option value="enterprise">Enterprise</option>
+              <option value="free">Free</option>
+            </select>
+          </div>
+          <div id="newKeyResult" class="key-result-box hidden">
+            <span>New API Key Created:</span>
+            <code id="newKeyDisplay"></code>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="btnCancelModal" class="btn-secondary">Close</button>
+          <button type="button" id="btnConfirmNewKey" class="btn-primary">Generate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+from typing import Dict, Any
+
+
+LLM_MODELS_REGISTRY: Dict[str, Dict[str, Any]] = {
+    # Tier 1: Cheap, Fast, Lightweight Models (Ideal for simple QA, lookups, short tasks)
+    "gemini-1.5-flash": {
+        "model_id": "google/gemini-1.5-flash",
+        "provider": "Google DeepMind",
+        "tier": "Tier 1 (Cheap & Fast)",
+        "cost_input_per_1m": 0.075,
+        "cost_output_per_1m": 0.30,
+        "speed": "Ultra Fast (<300ms)",
+        "api_endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+        "description": "Extremely fast and budget-friendly model for factual QA, simple queries, and short summaries.",
+    },
+    "gpt-4o-mini": {
+        "model_id": "openai/gpt-4o-mini",
+        "provider": "OpenAI",
+        "tier": "Tier 1 (Cheap & Fast)",
+        "cost_input_per_1m": 0.15,
+        "cost_output_per_1m": 0.60,
+        "speed": "Fast (<400ms)",
+        "api_endpoint": "https://api.openai.com/v1/chat/completions",
+        "description": "Cost-efficient lightweight model with solid general conversational intelligence.",
+    },
+    "claude-3-haiku": {
+        "model_id": "anthropic/claude-3-haiku",
+        "provider": "Anthropic",
+        "tier": "Tier 1 (Cheap & Fast)",
+        "cost_input_per_1m": 0.25,
+        "cost_output_per_1m": 1.25,
+        "speed": "Fast (<350ms)",
+        "api_endpoint": "https://api.anthropic.com/v1/messages",
+        "description": "High-throughput model for quick information extraction and short text analysis.",
+    },
+
+    # Tier 2: Balanced, Production-Grade Models (Moderate complexity, coding, nuanced creative tasks)
+    "claude-3-5-sonnet": {
+        "model_id": "anthropic/claude-3-5-sonnet",
+        "provider": "Anthropic",
+        "tier": "Tier 2 (Balanced / High Capability)",
+        "cost_input_per_1m": 3.00,
+        "cost_output_per_1m": 15.00,
+        "speed": "Moderate (<1200ms)",
+        "api_endpoint": "https://api.anthropic.com/v1/messages",
+        "description": "Industry-leading model for software engineering, architecture, and complex instruction following.",
+    },
+    "gpt-4o": {
+        "model_id": "openai/gpt-4o",
+        "provider": "OpenAI",
+        "tier": "Tier 2 (Balanced / High Capability)",
+        "cost_input_per_1m": 2.50,
+        "cost_output_per_1m": 10.00,
+        "speed": "Moderate (<1000ms)",
+        "api_endpoint": "https://api.openai.com/v1/chat/completions",
+        "description": "Versatile flagship model for complex text generation, reasoning, and multi-turn workflows.",
+    },
+    "gemini-1.5-pro": {
+        "model_id": "google/gemini-1.5-pro",
+        "provider": "Google DeepMind",
+        "tier": "Tier 2 (Balanced / High Capability)",
+        "cost_input_per_1m": 1.25,
+        "cost_output_per_1m": 5.00,
+        "speed": "Moderate (<1100ms)",
+        "api_endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent",
+        "description": "High-capacity reasoning model suited for comprehensive synthesis and long documents.",
+    },
+
+    # Tier 3: Frontier Reasoning Models (High complexity, multi-step deduction, advanced math, formal proofs)
+    "o3-mini": {
+        "model_id": "openai/o3-mini",
+        "provider": "OpenAI",
+        "tier": "Tier 3 (Frontier Reasoning)",
+        "cost_input_per_1m": 1.10,
+        "cost_output_per_1m": 4.40,
+        "speed": "Deliberate (Chain-of-thought)",
+        "api_endpoint": "https://api.openai.com/v1/chat/completions",
+        "description": "Advanced STEM and logic reasoning model optimized for math, science, and coding competitions.",
+    },
+    "deepseek-r1": {
+        "model_id": "deepseek/deepseek-r1",
+        "provider": "DeepSeek",
+        "tier": "Tier 3 (Frontier Reasoning)",
+        "cost_input_per_1m": 0.55,
+        "cost_output_per_1m": 2.19,
+        "speed": "Deliberate (Chain-of-thought)",
+        "api_endpoint": "https://api.deepseek.com/v1/chat/completions",
+        "description": "Open reasoning powerhouse capable of deep multi-step deduction and mathematical problem solving.",
+    },
+    "o1": {
+        "model_id": "openai/o1",
+        "provider": "OpenAI",
+        "tier": "Tier 3 (Frontier Reasoning)",
+        "cost_input_per_1m": 15.00,
+        "cost_output_per_1m": 60.00,
+        "speed": "Deliberate (Chain-of-thought)",
+        "api_endpoint": "https://api.openai.com/v1/chat/completions",
+        "description": "Top-tier frontier reasoning model designed for complex planning, research, and intricate problems.",
+    },
+}
